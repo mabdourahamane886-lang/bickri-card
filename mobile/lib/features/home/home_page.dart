@@ -5,6 +5,8 @@ import '../../core/services/bickri_card_api.dart';
 import '../auth/auth_page.dart';
 import '../card/card_page.dart';
 import '../profile/profile_page.dart';
+import '../money/money_page.dart';
+import '../security/security_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -96,24 +98,24 @@ class Dashboard extends StatelessWidget {
       const SizedBox(height: 22),
       const Text('Actions rapides', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
       const SizedBox(height: 12),
-      const Row(children: [
-        Expanded(child: _Action(icon: Icons.add_card, label: 'Recharger')),
-        SizedBox(width: 12),
-        Expanded(child: _Action(icon: Icons.swap_horiz, label: 'Transférer')),
-        SizedBox(width: 12),
-        Expanded(child: _Action(icon: Icons.shield_outlined, label: 'Sécurité')),
+      Row(children: [
+        Expanded(child: _ActionButton(icon: Icons.add_card, label: 'Recharger', onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const MoneyPage())))),
+        const SizedBox(width: 12),
+        Expanded(child: _ActionButton(icon: Icons.swap_horiz, label: 'Transférer', onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const MoneyPage(transfer: true))))),
+        const SizedBox(width: 12),
+        Expanded(child: _ActionButton(icon: Icons.shield_outlined, label: 'Sécurité', onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SecurityPage())))),
       ]),
     ]));
   }
 }
-class _Action extends StatelessWidget {
-  final IconData icon; final String label;
-  const _Action({required this.icon, required this.label});
-  @override Widget build(BuildContext context) => Container(
+class _ActionButton extends StatelessWidget {
+  final IconData icon; final String label; final VoidCallback onTap;
+  const _ActionButton({required this.icon, required this.label, required this.onTap});
+  @override Widget build(BuildContext context) => InkWell(onTap: onTap, borderRadius: BorderRadius.circular(18), child: Container(
     padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
     decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(18)),
     child: Column(children: [Icon(icon, color: AppTheme.blue), const SizedBox(height: 7), Text(label, textAlign: TextAlign.center)]),
-  );
+  ));
 }
 class TransactionsPage extends StatelessWidget {
   final Map<String, dynamic>? status;
